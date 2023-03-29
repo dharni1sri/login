@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      /* Style the table */
+      body{
+        background-color: gray;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      th, td {
+        text-align: left;
+        padding: 8px;
+      }
+
+      th {
+        background-color: #ddd;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      /* Style the form for adding/editing records */
+      form {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-bottom: 16px;
+      }
+
+      input[type="submit"] {
+        background-color: #4CAF50;
+        color: black;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      /* Style the delete confirmation dialog */
+      .dialog {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+      }
+
+      .dialog-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+
+      .dialog-content p {
+        margin-bottom: 16px;
+      }
+
+      .dialog-buttons {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .dialog-buttons button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .dialog-buttons button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Records</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Age</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Dharnidhar Srivastava</td>
+          <td>dharnidharsrivastava000@gmail.com</td>
+          <td>23</td>
+          <td>
+            <a href="?action=edit&id=1">Edit</a>
+            <a href="?action=delete&id=1">Delete</a>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Shivam srivastava</td>
+          <td>shivam123@gmail.com</td>
+          <td>27</td>
+          <td>
+            <a href="?action=edit&id=2"> Edit</a>
+                <a href="?action=delete&id=2">Delete</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <h2>Add a new record</h2>
+        <form action="?action=add" method="post">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        
+          <label for="email">Email</label>
+          <input type="text" id="email" name="email" required>
+
+          <label for="Age">Age</label>
+          <input type="text" id="number" name="Age" required>
+        
+          <input type="submit" value="Add">
+        </form>
+        <div class="dialog" id="edit-dialog">
+          <div class="dialog-content">
+            <p>Are you sure you want to edit record?</p>
+            <div class="dialog-buttons">
+              <button id="delete-confirm1">Edit</button>
+              <button id="delete-cancel1">Cancel</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="dialog" id="delete-dialog">
+          <div class="dialog-content">
+            <p>Are you sure you want to delete this record?</p>
+            <div class="dialog-buttons">
+              <button id="delete-confirm">Delete</button>
+              <button id="delete-cancel">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <script>
+            // Add event listeners for the delete links
+            const deleteLinks = document.querySelectorAll('a[href*="?action=delete"]');
+            deleteLinks.forEach(link => {
+              link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const id = link.getAttribute('href').split('=')[1];
+                const dialog = document.querySelector('#delete-dialog');
+                const confirmButton = document.querySelector('#delete-confirm');
+                const cancelButton = document.querySelector('#delete-cancel');
+          
+                // Show the confirmation dialog
+                dialog.style.display = 'block';
+          
+                // Add event listener for the confirm button
+                confirmButton.addEventListener('click', () => {
+                  // Redirect to the delete page with the ID in the query string
+                  window.location.href = `delete.php?id=${id}`;
+                });
+          
+                // Add event listener for the cancel button
+                cancelButton.addEventListener('click', () => {
+                  dialog.style.display = 'none';
+                });
+              });
+            });
+             // Add event listeners for the edit links
+             const editLinks = document.querySelectorAll('a[href*="?action=edit"]');
+            editLinks.forEach(link => {
+              link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const id = link.getAttribute('href').split('=')[1];
+                const dialog = document.querySelector('#edit-dialog');
+                const confirmButton = document.querySelector('#delete-confirm1');
+                const cancelButton = document.querySelector('#delete-cancel1');
+          
+                // Show the confirmation dialog
+                dialog.style.display = 'block';
+          
+                // Add event listener for the confirm button
+                confirmButton.addEventListener('click', () => {
+                  // Redirect to the edit page with the ID in the query string
+                  window.location.href = `edit.php?id=${id}`;
+                });
+          
+                // Add event listener for the cancel button
+                cancelButton.addEventListener('click', () => {
+                  dialog.style.display = 'none';
+                });
+              });
+            });
+          </script>
+        </body>
+        </html>
+        

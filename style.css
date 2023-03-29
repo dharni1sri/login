@@ -1,0 +1,22 @@
+$primary-color: #3273dc;
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.title {
+  color: $primary-color;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.text {
+  color: $primary-color;
+  font-size: 18px;
+  margin-top: 20px;
+}
+{"version":3,"sources":["main.scss","main.css"],"names":[],"mappings":"AAEA;EACE,aAAA;EACA,mBAAA;EACA,uBAAA;EACA,aAAA;ACDF;;ADIA;EACE,cAVc;EAWd,eAAA;EACA,iBAAA;ACDF;;ADIA;EACE,cAhBc;EAiBd,eAAA;EACA,gBAAA;ACDF","file":"main.css"}
+
